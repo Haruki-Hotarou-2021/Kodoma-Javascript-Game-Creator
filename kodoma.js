@@ -132,6 +132,13 @@ class btn {
         break;
     }
   }
+  
+  // Função para lidar com o evento de touch no botão
+  onTouch(callback) {
+    this.ontouchstart = () => {
+      callback(); // Chama a função de callback passada como parâmetro
+    }
+  }
 
   _desenharCirculo(ctx) {
     ctx.beginPath();
@@ -178,6 +185,7 @@ class circ {
     this.fill = fill;
     this.color = color;
     this.display();
+    this.onTouch();
   }
 
   display() {
@@ -192,6 +200,13 @@ class circ {
       ctxt.stroke();
     }
   }
+  
+  // Função para lidar com o evento de touch no botão
+  onTouch(callback) {
+    this.ontouchstart = () => {
+      callback(); // Chama a função de callback passada como parâmetro
+    }
+  }
 }
 
 // Função que exibe um texto na tela
@@ -204,3 +219,15 @@ function print(text, x, y, size, font, color = "white") {
   ctxt.fillStyle = color;
   ctxt.fillText(text, x, y);
 }
+
+
+// Eventos de Touch:
+
+//ontouchstart
+//ontouchmove
+//ontouchend
+
+// Eventos de Mouse:
+
+//onmousedown
+//onmouseup
