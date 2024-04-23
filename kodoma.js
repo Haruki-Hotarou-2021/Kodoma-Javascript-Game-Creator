@@ -5,6 +5,7 @@ class Canvas {
     this.width = width;
     this.height = height;
     this.backgroundColor = backgroundColor;
+    this.gridColor = '#FFFFFF';
     this.getWidth();
     this.getHeight();
     
@@ -17,6 +18,9 @@ class Canvas {
     
     // Obtém o contexto do canvas
     this.ctx = this.element.getContext('2d');
+
+    this.centralize();
+    //this.grid();
     
     // Define a margin e o padding do body para 0
     document.body.style.margin = 0;
@@ -35,7 +39,31 @@ class Canvas {
   getHeight() {
     return this.height;
   }
-  
+
+  // Define a origem das coordenadas para o centro da tela
+  centralize() {
+    this.ctx.translate(this.width / 2, this.height / 2);
+    // Invete o eixo Y
+    this.ctx.scale(1, -1);
+  }
+
+  /*
+  grid() {
+    // Desenha o grid
+    ctx.beginPath();
+    for (var x = -this.width / 2; x <= this.width / 2; x += 20) {
+      ctx.moveTo(x, -this.height / 2);
+      ctx.lineTo(x, this.height / 2);
+    }
+    for (var y = -this.height / 2; y <= this.height / 2; y += 20) {
+      ctx.moveTo(-this.width / 2, y);
+      ctx.lineTo(this.width / 2, y);
+    }
+    ctx.strokeStyle = this.gridColor;
+    ctx.stroke();
+  }
+  */
+
 }
 // Define o Título da página
 function setTitle(title) {
@@ -67,7 +95,7 @@ window.onload = function() {
   onLoad();
 
   // Função para atualizar e desenhar os recursos do jogo
-  function animate() {
+  function update() {
     let lastTime = 0;
     function loop(timestamp) {
       const dt = timestamp - lastTime;
@@ -78,7 +106,7 @@ window.onload = function() {
     }
     requestAnimationFrame(loop);
   }
-  animate();
+  update();
 }
 
 // Aguardar segundos
@@ -219,7 +247,6 @@ function print(text, x, y, size, font, color = "white") {
   ctxt.fillStyle = color;
   ctxt.fillText(text, x, y);
 }
-
 
 // Eventos de Touch:
 
