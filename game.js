@@ -6,7 +6,7 @@ function onLoad() {
 }
 
 function onGame() {
-  print('Hello World', cX, cY, 14, 'Arial')
   player.y += 1;
+  print(player.y, cX, cY, 14, 'Arial')
   player.display();
 }

@@ -42,6 +42,17 @@ function setTitle(title) {
   document.title = title;
 }
 
+function setFavicon(url) {
+  const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+  link.type = 'image/x-icon';
+  link.rel = 'shortcut icon';
+  link.href = url;
+  document.head.appendChild(link);
+}
+
+// Exemplo de uso
+setFavicon('player.png');
+
 // Cria um canvas
 let canvas = new Canvas('canvas', innerWidth, innerHeight);
 let ctxt = canvas.ctx;
@@ -73,7 +84,7 @@ window.onload = function() {
 // Aguardar segundos
 function wait(seconds) {
   if (isNaN(seconds) || seconds < 0) {
-    throw new Error("O parâmetro 'seconds' deve ser um número não negativo");
+    console.error("O parâmetro 'seconds' deve ser um número não negativo");
   }
 
   return new Promise((resolve) => {
@@ -117,12 +128,12 @@ class btn {
         this._desenharCirculo(ctxt);
         break;
       case "quad":
-        this._desenharQuadradoArredondado(ctx);
+        this._desenharQuadradoArredondado(ctxt);
         break;
     }
   }
 
-  _desenharCirculo(ctxt) {
+  _desenharCirculo(ctx) {
     ctx.beginPath();
     ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, 2 * Math.PI);
 
@@ -135,7 +146,7 @@ class btn {
     }
   }
 
-  _desenharQuadradoArredondado(ctxt) {
+  _desenharQuadradoArredondado(ctx) {
     const radius = 5; // Raio de arredondamento das bordas
     ctx.beginPath();
     ctx.moveTo(this.x + radius, this.y);
@@ -170,15 +181,15 @@ class circ {
   }
 
   display() {
-    canvas.ctx.beginPath();
-    canvas.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctxt.beginPath();
+    ctxt.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 
     if (this.fill) {
-      canvas.ctx.fillStyle = this.color;
-      canvas.ctx.fill();
+      ctxt.fillStyle = this.color;
+      ctxt.fill();
     } else {
-      canvas.ctx.strokeStyle = this.color;
-      canvas.ctx.stroke();
+      ctxt.strokeStyle = this.color;
+      ctxt.stroke();
     }
   }
 }
@@ -186,7 +197,7 @@ class circ {
 // Função que exibe um texto na tela
 function print(text, x, y, size, font, color = "white") {
   if (!text) {
-    throw new Error("O parâmetro 'text' não pode ser vazio");
+    console.error("O parâmetro 'text' não pode ser vazio");
   }
 
   ctxt.font = `${size}px ${font}`;
