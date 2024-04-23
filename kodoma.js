@@ -19,12 +19,13 @@ class Canvas {
     // Obtém o contexto do canvas
     this.ctx = this.element.getContext('2d');
 
-    this.centralize();
-    //this.grid();
+    //this.centralize();
+    this.grid();
     
     // Define a margin e o padding do body para 0
     document.body.style.margin = 0;
     document.body.style.padding = 0;
+    document.body.style.background = '#000000';
     
     // Adiciona o elemento canvas ao body
     document.body.appendChild(this.element);
@@ -40,29 +41,29 @@ class Canvas {
     return this.height;
   }
 
+/*
   // Define a origem das coordenadas para o centro da tela
   centralize() {
     this.ctx.translate(this.width / 2, this.height / 2);
     // Invete o eixo Y
     this.ctx.scale(1, -1);
   }
+  */
 
-  /*
   grid() {
     // Desenha o grid
-    ctx.beginPath();
-    for (var x = -this.width / 2; x <= this.width / 2; x += 20) {
-      ctx.moveTo(x, -this.height / 2);
-      ctx.lineTo(x, this.height / 2);
+    this.ctx.beginPath();
+    for (var x = -this.width; x <= this.width; x += 20) {
+      this.ctx.moveTo(x, -this.height);
+      this.ctx.lineTo(x, this.height);
     }
-    for (var y = -this.height / 2; y <= this.height / 2; y += 20) {
-      ctx.moveTo(-this.width / 2, y);
-      ctx.lineTo(this.width / 2, y);
+    for (var y = -this.height; y <= this.height; y += 20) {
+      this.ctx.moveTo(-this.width, y);
+      this.ctx.lineTo(this.width, y);
     }
-    ctx.strokeStyle = this.gridColor;
-    ctx.stroke();
+    this.ctx.strokeStyle = this.gridColor;
+    this.ctx.stroke();
   }
-  */
 
 }
 // Define o Título da página
@@ -82,7 +83,7 @@ function setFavicon(url) {
 setFavicon('player.png');
 
 // Cria um canvas
-let canvas = new Canvas('canvas', innerWidth, innerHeight);
+let canvas = new Canvas('canvas', window.innerWidth, window.innerHeight);
 let ctxt = canvas.ctx;
 
 // Função que limpa o canvas
@@ -127,8 +128,8 @@ class spr {
     this.sprite.src = sprite;
     this.width = width;
     this.height = height;
-    this.x = X;
-    this.y = Y;
+    this.x = X - this.width / 2;
+    this.y = Y - this.height / 2;
     this.display();
   }
 
@@ -148,6 +149,7 @@ class btn {
     this.color = color;
     this.fill = fill;
     this.display();
+    this.onTouch();
   }
 
   display() {
@@ -229,12 +231,47 @@ class circ {
     }
   }
   
+  isInside(x, y) {
+    const distance = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
+    return distance <= this.radius;
+  }
+  
+  /*
   // Função para lidar com o evento de touch no botão
   onTouch(callback) {
+    canvas.addEventListener('click', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      if (this.isInside(mouseX, mouseY)) {
+        callback(); // Chama a função de callback passada como parâmetro
+      }
+    });
+  }
+  */
+  /*
+  onTouch(callback) {
     this.ontouchstart = () => {
-      callback(); // Chama a função de callback passada como parâmetro
+
+      if (this.isInside(mouseX, mouseY)) {
+        callback(); // Chama a função de callback passada como parâmetro
+      }
     }
   }
+  */
+  
+  onTouch(callback) {
+    myCanvas.addEventListener('touchstart', (event) => {
+      const touchX = event.touches[0].clientX - canvas.offsetLeft;
+      const touchY = event.touches[0].clientY - canvas.offsetTop;
+
+      if (this.isInside(touchX, touchY)) {
+        callback(); // Chama a função de callback passada como parâmetro
+      }
+    });
+  }
+
 }
 
 // Função que exibe um texto na tela
