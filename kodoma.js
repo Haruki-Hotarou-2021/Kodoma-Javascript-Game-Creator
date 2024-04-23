@@ -13,7 +13,7 @@ function animate() {
   let lastTime = 0;
   function loop(timestamp) {
     const dt = timestamp - lastTime;
-    clearCanvas(ctx); // Passa o contexto como parâmetro para a função clearCanvas
+    cls(ctx); // Passa o contexto como parâmetro para a função cls
     onGame(dt);
     lastTime = timestamp;
     requestAnimationFrame(loop);
@@ -23,8 +23,27 @@ function animate() {
 
 animate();
 
-function clearCanvas(ctx) {
+// Função que limpa o canvas
+function cls(ctx) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function getWidth() {
+  return canvas.width;
+}
+
+function getHeight() {
+  return canvas.height;
+}
+
+function wait(seconds) {
+  if (isNaN(seconds) || seconds < 0) {
+    throw new Error("O parâmetro 'seconds' deve ser um número não negativo");
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  });
 }
 
 // Classe que irá criar um sprite
@@ -101,4 +120,40 @@ class btn {
       ctx.stroke();
     }
   }
+}
+
+class circ {
+  constructor(radius, x, y, fill, color) {
+    this.radius = radius;
+    this.x = x;
+    this.y = y;
+    this.fill = fill;
+    this.color = color;
+    this.display();
+  }
+
+  display() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+
+    if (this.fill) {
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = this.color;
+      ctx.stroke();
+    }
+  }
+}
+
+
+
+function print(text, x, y, size, font, color = "black") {
+  if (!text) {
+    throw new Error("O parâmetro 'text' não pode ser vazio");
+  }
+
+  ctx.font = `${size}px ${font}`;
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
 }
