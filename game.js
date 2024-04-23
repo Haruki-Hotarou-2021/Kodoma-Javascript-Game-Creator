@@ -1,11 +1,10 @@
 function onLoad() {
-  let player = new spr('player.png', w, h, x, y);
-  player.x = 10;
-  player.y = 20;
+  setTitle('My Game');
+  player = new spr('player.png', 100, 100, 50, 50);
 }
 
 function onGame() {
-  step = player.x + 1;
+  print('Hello World', 70, 200, 14, 'Arial')
+  player.y += 1;
   player.display();
-  player.x = step
 }

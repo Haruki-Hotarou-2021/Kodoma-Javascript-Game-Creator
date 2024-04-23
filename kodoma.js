@@ -1,40 +1,71 @@
-// Função para carregar os recursos do jogo
-window.load = function() {
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+class Canvas {
+  constructor(id, width, height, backgroundColor = "#000000") {
+    this.id = id;
+    this.width = width;
+    this.height = height;
+    this.backgroundColor = backgroundColor;
+    this.getWidth();
+    this.getHeight();
+    
+    // Cria o elemento canvas no DOM
+    this.element = document.createElement('canvas');
+    this.element.id = this.id;
+    this.element.width = this.width;
+    this.element.height = this.height;
+    this.element.style.backgroundColor = this.backgroundColor;
+    
+    // Obtém o contexto do canvas
+    this.ctx = this.element.getContext('2d');
+    
+    // Define a margin e o padding do body para 0
+    document.body.style.margin = 0;
+    document.body.style.padding = 0;
+    
+    // Adiciona o elemento canvas ao body
+    document.body.appendChild(this.element);
+  }
+  
+  getWidth() {
+    this.width;
+  }
 
-  onload();
-};
+  getHeight() {
+    this.height;
+  }
+  
+}
+
+function setTitle(title) {
+  document.title = title;
+}
+
+let canvas = new Canvas('canvas', innerWidth, innerHeight);
+let ctxt = canvas.ctx;
+
+
+// Função para carregar os recursos do jogo
+window.onload = function() {
+  onLoad();
+}
+
+// Função que limpa o canvas
+function cls() {
+  ctxt.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 // Função para atualizar e desenhar os recursos do jogo
 function animate() {
   let lastTime = 0;
   function loop(timestamp) {
     const dt = timestamp - lastTime;
-    cls(ctx); // Passa o contexto como parâmetro para a função cls
+    cls(); 
     onGame(dt);
     lastTime = timestamp;
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 }
-
 animate();
-
-// Função que limpa o canvas
-function cls(ctx) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function getWidth() {
-  return canvas.width;
-}
-
-function getHeight() {
-  return canvas.height;
-}
 
 function wait(seconds) {
   if (isNaN(seconds) || seconds < 0) {
@@ -59,7 +90,7 @@ class spr {
   }
 
   display() {
-    ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
+    ctxt.drawImage(this.sprite, this.x, this.y, this.width, this.height);
   }
 }
 
@@ -78,7 +109,7 @@ class btn {
   display() {
     switch (this.type) {
       case "circ":
-        this._desenharCirculo(ctx);
+        this._desenharCirculo(ctxt);
         break;
       case "quad":
         this._desenharQuadradoArredondado(ctx);
@@ -86,7 +117,7 @@ class btn {
     }
   }
 
-  _desenharCirculo(ctx) {
+  _desenharCirculo(ctxt) {
     ctx.beginPath();
     ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, 2 * Math.PI);
 
@@ -99,7 +130,7 @@ class btn {
     }
   }
 
-  _desenharQuadradoArredondado(ctx) {
+  _desenharQuadradoArredondado(ctxt) {
     const radius = 5; // Raio de arredondamento das bordas
     ctx.beginPath();
     ctx.moveTo(this.x + radius, this.y);
@@ -133,27 +164,25 @@ class circ {
   }
 
   display() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    canvas.ctx.beginPath();
+    canvas.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 
     if (this.fill) {
-      ctx.fillStyle = this.color;
-      ctx.fill();
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fill();
     } else {
-      ctx.strokeStyle = this.color;
-      ctx.stroke();
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.stroke();
     }
   }
 }
 
-
-
-function print(text, x, y, size, font, color = "black") {
+function print(text, x, y, size, font, color = "white") {
   if (!text) {
     throw new Error("O parâmetro 'text' não pode ser vazio");
   }
 
-  ctx.font = `${size}px ${font}`;
-  ctx.fillStyle = color;
-  ctx.fillText(text, x, y);
+  ctxt.font = `${size}px ${font}`;
+  ctxt.fillStyle = color;
+  ctxt.fillText(text, x, y);
 }
