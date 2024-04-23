@@ -1,3 +1,4 @@
+// Classe para criar um canvas
 class Canvas {
   constructor(id, width, height, backgroundColor = "#000000") {
     this.id = id;
@@ -25,48 +26,51 @@ class Canvas {
     document.body.appendChild(this.element);
   }
   
+  // Obtém a largura do canvas
   getWidth() {
-    this.width;
+    return this.width;
   }
-
+  
+  // Obtém a altura do canvas
   getHeight() {
-    this.height;
+    return this.height;
   }
   
 }
-
+// Define o Título da página
 function setTitle(title) {
   document.title = title;
 }
 
+// Cria um canvas
 let canvas = new Canvas('canvas', innerWidth, innerHeight);
 let ctxt = canvas.ctx;
-
-
-// Função para carregar os recursos do jogo
-window.onload = function() {
-  onLoad();
-}
 
 // Função que limpa o canvas
 function cls() {
   ctxt.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// Função para atualizar e desenhar os recursos do jogo
-function animate() {
-  let lastTime = 0;
-  function loop(timestamp) {
-    const dt = timestamp - lastTime;
-    cls(); 
-    onGame(dt);
-    lastTime = timestamp;
+// Função para carregar os recursos do jogo
+window.onload = function() {
+  onLoad();
+
+  // Função para atualizar e desenhar os recursos do jogo
+  function animate() {
+    let lastTime = 0;
+    function loop(timestamp) {
+      const dt = timestamp - lastTime;
+      cls(); 
+      onGame(dt);
+      lastTime = timestamp;
+      requestAnimationFrame(loop);
+    }
     requestAnimationFrame(loop);
   }
-  requestAnimationFrame(loop);
+  animate();
 }
-animate();
 
+// Aguardar segundos
 function wait(seconds) {
   if (isNaN(seconds) || seconds < 0) {
     throw new Error("O parâmetro 'seconds' deve ser um número não negativo");
@@ -77,15 +81,15 @@ function wait(seconds) {
   });
 }
 
-// Classe que irá criar um sprite
+// Classe que cria um sprite
 class spr {
-  constructor(sprite, width, height, x, y) {
+  constructor(sprite, width, height, X, Y) {
     this.sprite = new Image();
     this.sprite.src = sprite;
     this.width = width;
     this.height = height;
-    this.x = x;
-    this.y = y;
+    this.x = X;
+    this.y = Y;
     this.display();
   }
 
@@ -94,6 +98,7 @@ class spr {
   }
 }
 
+// Classe que cria um botão
 class btn {
   constructor(type, width, height, x, y, color, fill) {
     this.type = type;
@@ -153,6 +158,7 @@ class btn {
   }
 }
 
+// Classe que cria um círculo 
 class circ {
   constructor(radius, x, y, fill, color) {
     this.radius = radius;
@@ -177,6 +183,7 @@ class circ {
   }
 }
 
+// Função que exibe um texto na tela
 function print(text, x, y, size, font, color = "white") {
   if (!text) {
     throw new Error("O parâmetro 'text' não pode ser vazio");
