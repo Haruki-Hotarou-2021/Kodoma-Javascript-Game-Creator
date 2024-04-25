@@ -118,7 +118,7 @@ function wait(seconds, callback) {
 }
 
 
-function print(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
+function print(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
     return;
@@ -139,7 +139,7 @@ function print(text, x, y, size, color = "white", font = 'Arial', type = 'normal
 
 
 // Função que exibe um texto na tela
-function printf(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
+function printf(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
   }
@@ -194,22 +194,66 @@ function printf(text, x, y, size, color = "white", font = 'Arial', type = 'norma
     return spr;
   }
 */
+
 // Desenha um sprite
-function spr(sprite, width, height, x, y) {
-  var img = new Image();
-  img.src = sprite;
-  //img.onload = function() {
-    canvas.ctx.drawImage(img, x, y, width, height);
-  //};
+function spr(sprite, width = 50, height = 50, x = 0, y = 0) {
+  let spr = new Image();
+  spr.src = sprite;
+  let X = x - width / 2;
+  let Y = y - height / 2;
+  canvas.ctx.drawImage(spr, X, Y, width, height);
 }
 
-// Desenha um retângulo colorido
-function rect(x, y, width, height, color) {
-  canvas.ctx.fillStyle = color;
-  canvas.ctx.fillRect(x, y, width, height);
+// Desenha um retângulo
+function rect(x, y, width, height, color = 'red', fill = 'fill') {
+  let X = x - width / 2;
+  let Y = y - height / 2;
+  
+  if (fill === 'fill') {
+      canvas.ctx.fillStyle = color;
+      canvas.ctx.fillRect(X, Y, width, height);
+    } else {
+      canvas.ctx.strokeStyle = color;
+      canvas.ctx.strokeRect(X, Y, width, height);
+    }
 }
-// Desenha as birdas de um retângulo 
-function rectb(x, y, width, height, color) {
+
+// Desenha um círculo 
+function circ(x, y, radius, color = 'blue', fill = 'fill') {
+  canvas.ctx.beginPath();
+  canvas.ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+  if (fill === 'fill') {
+    canvas.ctx.fillStyle = color;
+    canvas.ctx.fill();
+  } else {
+    canvas.ctx.strokeStyle = color;
+    canvas.ctx.stroke();
+  }
+}
+
+// Desenha uma linha
+function line(x0, y0, x1, y1, color) {
+  canvas.ctx.beginPath();
+  canvas.ctx.moveTo(x0, y0);
+  canvas.ctx.lineTo(x1, y1);
   canvas.ctx.strokeStyle = color;
-  canvas.ctx.strokeRect(x, y, width, height);
+  canvas.ctx.stroke();
+}
+
+// Desenha um triângulo
+function tri(x1, y1, x2, y2, x3, y3, color = 'cyan', fill = 'fill') {
+  canvas.ctx.beginPath();
+  canvas.ctx.moveTo(x1, y1);
+  canvas.ctx.lineTo(x2, y2);
+  canvas.ctx.lineTo(x3, y3);
+  canvas.ctx.closePath();
+
+  if (fill === 'fill') {
+    canvas.ctx.fillStyle = color;
+    canvas.ctx.fill();
+  } else {
+    canvas.ctx.strokeStyle = color;
+    canvas.ctx.stroke();
+  }
 }
