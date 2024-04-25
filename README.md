@@ -4,7 +4,7 @@
 Is Inspired On TIC-80
 
 > kodoma - JS Game Creator (v0.0.2) <br>
-Is Inspired On Love2D
+Is Inspired On LÖVE
 
 ## Kodoma v0.0.2
 kodoma é um framework de jogos JavaScript 2D leve e fácil de usar, projetado para ajudar desenvolvedores iniciantes a criar jogos simples.

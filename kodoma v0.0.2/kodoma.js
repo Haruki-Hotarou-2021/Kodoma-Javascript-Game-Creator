@@ -33,6 +33,7 @@ canvas = {
   }
 };
 
+// Define a funcao de configuração do canvas
 if (typeof config === 'function') {
   config();
 }
@@ -45,6 +46,7 @@ canvasElement.id = canvas.id;
 canvasElement.width = canvas.width;
 canvasElement.height = canvas.height;
 canvasElement.style.backgroundColor = canvas.backgroundColor;
+
 // Define a margin e o padding do body para 0
 document.body.style.margin = 0;
 document.body.style.padding = 0;
@@ -115,37 +117,30 @@ function wait(seconds, callback) {
   }, seconds * 1000);
 }
 
-function print(text, x, y, size, color = "white") {
+function print(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
     return;
   }
-
   // Defina a fonte
-  canvas.ctx.font = `${size}px Arial`;
+  canvas.ctx.font = `${type} ${size}px ${font}`;
   canvas.ctx.fillStyle = color;
-
   // Calcule a largura do texto usando a função measureText()
   const textMetrics = canvas.ctx.measureText(text);
   const textWidth = textMetrics.width;
-
   // Ajuste a posição x para centralizar o texto
   x -= textWidth / 2;
-
   // Desenhe o texto na posição ajustada
   canvas.ctx.fillText(text, x, y);
-
-  // Retorne a largura do texto
-  return textWidth;
 }
 
 
 // Função que exibe um texto na tela
-function printf(text, x, y, size, font, color = "white") {
+function printf(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
   }
-  canvas.ctx.font = `${size}px Arial`;
+  canvas.ctx.font = `${type} ${size}px ${font}`;
   canvas.ctx.fillStyle = color;
   canvas.ctx.fillText(text, x, y);
 }

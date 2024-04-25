@@ -6,7 +6,7 @@ text = 'Hello';
 
 function onGame() {
   canvas.grid();
-  print(text, 20, 50, 14, 'Arial')
+  print(text, 20, 50, 14, 'white', 'Times New Roman')
   player.display();
   wait(5, mudarTexto);
   
