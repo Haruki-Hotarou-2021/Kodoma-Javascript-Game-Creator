@@ -149,7 +149,7 @@ function printf(text, x, y, size, color = "white", font = 'Arial', type = 'norma
 // CLASSES
 
 // Classe que cria um sprite
-class spr {
+class Spr {
   constructor(sprite, width, height, X, Y) {
     this.sprite = new Image();
     this.sprite.src = sprite;
@@ -157,7 +157,6 @@ class spr {
     this.height = height;
     this.x = X - this.width / 2;
     this.y = Y - this.height / 2;
-    this.display();
   }
 
   display() {
@@ -191,5 +190,50 @@ class spr {
         callback(event);
       }
     });
+  }
+}
+
+
+class Rect {
+  constructor(x, y, width, height, color, fill = 'fill') {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.fill = fill;
+  }
+
+  display() {
+    if (this.fill === 'fill') {
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fillRect(this.x, this.y, this.width, this.height);
+    } else {
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.strokeRect(this.x, this.y, this.width, this.height);
+    }
+  }
+}
+
+class Circ {
+  constructor(radius, x, y, color, fill = 'fill') {
+    this.radius = radius;
+    this.x = x;
+    this.y = y;
+    this.fill = fill;
+    this.color = color;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    
+    if (this.fill === 'fill') {
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fill();
+    } else {
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.stroke();
+    }
   }
 }
