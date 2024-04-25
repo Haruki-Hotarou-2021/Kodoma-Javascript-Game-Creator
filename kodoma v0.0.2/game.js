@@ -24,5 +24,5 @@ function mudarTexto() {
 // Função para mover o player
 function log() {
 console.log('Touching');
-player.y += 1
+player.y += 1;
 }
