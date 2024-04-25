@@ -28,6 +28,12 @@ canvas = {
     }
     this.ctx.strokeStyle = this.gridColor;
     this.ctx.stroke();
+  },
+  getWidth() {
+    return this.width;
+  },
+  getHeight() {
+    return this.height;
   }
 };
 

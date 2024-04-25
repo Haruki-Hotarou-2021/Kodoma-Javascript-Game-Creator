@@ -4,12 +4,10 @@ function onGame(dt) {
   
   // Define o favicon da página
   setFavicon('/../player.png');
-  print(`FPS: ${dt}`, 20, 60, 14);
+  print('Hello World!', 20, 60, 14);
   
-  cX = canvas.getWidth() / 2;
-  cY = canvas.getHeight() / 2;
-  btnX = canvas.getWidth() * 0.85;
-  btnY = canvas.getHeight() * 0.85;
+  cX = canvas.width / 2;
+  cY = canvas.height / 2;
   
   spr('/../player.png', 50, 50, cX, cY);
   
