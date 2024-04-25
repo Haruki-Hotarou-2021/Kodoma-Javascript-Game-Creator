@@ -1,10 +1,12 @@
 /**
- * kodoma
+ * @title   Kodoma JS Game Creator
+ * @author  Haruki
+ * @desc    A LÖVE based framework
+ * @license MIT License
  * @version 0.0.2
- * @author Haruki-Hotarou-2021
- * @license MIT 
- */
+*/
 
+// Configura o canvas
 canvas = {
   id: 'canvas', // ID do elemento canvas
   width: window.innerWidth, // Largura do canvas (tamanho da tela)
@@ -30,6 +32,10 @@ canvas = {
     this.ctx.stroke();
   }
 };
+
+if (typeof config === 'function') {
+  config();
+}
 
 // Cria o elemento canvas
 const canvasElement = document.createElement('canvas');
@@ -73,7 +79,9 @@ function setFavicon(url) {
 
 // Função para carregar os recursos do jogo
 window.onload = function() {
+  if (typeof onLoad === 'function') {
   onLoad();
+  }
 
   // Função para atualizar e desenhar os recursos do jogo
   function update() {
@@ -81,7 +89,9 @@ window.onload = function() {
     function loop(timestamp) {
       const dt = timestamp - lastTime;
       cls(); 
-      onGame(dt);
+      if (typeof onGame === 'function') {
+        onGame(dt);
+      }
       lastTime = timestamp;
       requestAnimationFrame(loop);
     }

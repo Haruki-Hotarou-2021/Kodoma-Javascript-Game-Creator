@@ -10,11 +10,7 @@ function onGame() {
   player.display();
   wait(5, mudarTexto);
   
-  
   player.touchStart(log);
-
-  
-  
 }
 
 function mudarTexto() {

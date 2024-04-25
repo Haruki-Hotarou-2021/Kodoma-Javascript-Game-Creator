@@ -1,17 +1,19 @@
 /**
- * kodoma
+ * @title   Kodoma JS Game Creator
+ * @author  Haruki
+ * @desc    A TIC-80 based framework
+ * @license MIT License
  * @version 0.0.1
- * @author Haruki-Hotarou-2021
- * @license MIT 
- */
+*/
 
+// Configura o canvas
 canvas = {
   id: 'canvas', // ID do elemento canvas
   width: window.innerWidth, // Largura do canvas (tamanho da tela)
   height: window.innerHeight, // Altura do canvas (tamanho da tela)
   context: '2d', // Define o contexto para 2D
   ctx: null, // Contexto 2D do canvas (inicializado posteriormente)
-  backgroundColor: '#000000', // Cor de fundo do canvas (branco padrão)
+  backgroundColor: '#000000', // Cor de fundo do canvas (Preto padrão)
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
   // Função para desenhar o grid
@@ -36,6 +38,10 @@ canvas = {
     return this.height;
   }
 };
+
+if (typeof config === 'function') {
+  config();
+}
 
 // Cria o elemento canvas
 const canvasElement = document.createElement('canvas');
@@ -83,8 +89,10 @@ window.onload = function() {
   function update() {
     let lastTime = 0;
     function loop(timestamp) {
-      const dt = timestamp - lastTime; 
-      onGame(dt);
+      const dt = timestamp - lastTime;
+      if (typeof onGame === 'function') {
+        onGame(dt);
+      }
       lastTime = timestamp;
       requestAnimationFrame(loop);
     }
@@ -147,11 +155,11 @@ function printf(text, x, y, size, color = "white") {
 
 // Objetos
 
+/*
 // Função que cria um sprite
   function spr(sprite, width, height, X, Y) {
     let spr = {
       sprite: new Image(),
-      sprite: src = sprite,
       width: width,
       height: height,
       x: X - this.width / 2,
@@ -185,5 +193,16 @@ function printf(text, x, y, size, color = "white") {
         });
       }
     }
+    spr.sprite.src = sprite;
     spr.display();
+    return spr;
   }
+*/
+
+function spr(sprite, width, height, x, y) {
+  var img = new Image();
+  img.src = sprite;
+  //img.onload = function() {
+    canvas.ctx.drawImage(img, x, y, width, height);
+  //};
+}
