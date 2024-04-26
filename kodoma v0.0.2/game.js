@@ -7,13 +7,16 @@ function onLoad() {
   player = new Spr('/../player.png', 50, 50, 200, 100);
   
   // Carregar um retângulo
-  rect = new Rect(100, 250, 50, 50, "green");
+  rect = new Rect(50, 200, 50, 50, "green");
   
   // Carregar um retangulo do tipo line
-  rectb = new Rect(200, 250, 50, 50, "red", 'line');
+  rectb = new Rect(50, 255, 50, 50, "red", 'line');
   
   //Carregar um círculo do tipo line
-  circ = new Circ(50, 180, 400, 'blue', 'line');
+  circ = new Circ(canvas.width - 50, 200, 20, 'blue', 'line');
+
+  arc = new Arc(canvas.width - 50, 250, 20, 90, 270, 'green');
+
 }
 
 
@@ -43,6 +46,9 @@ function onGame() {
   
   // Desenha o círculo do tipo line
   circ.display();
+  
+  arc.display()
+  
 }
 
 // Função que será chamada após a espera

@@ -233,7 +233,7 @@ function circ(x, y, radius, color = 'blue', fill = 'fill') {
 }
 
 // Desenha uma linha
-function line(x0, y0, x1, y1, color) {
+function line(x0, y0, x1, y1, color = 'pink') {
   canvas.ctx.beginPath();
   canvas.ctx.moveTo(x0, y0);
   canvas.ctx.lineTo(x1, y1);
@@ -242,13 +242,26 @@ function line(x0, y0, x1, y1, color) {
 }
 
 // Desenha um triângulo
-function tri(x1, y1, x2, y2, x3, y3, color = 'cyan', fill = 'fill') {
+function tri(x1, y1, x2, y2, x3, y3, color = 'green',fill = 'fill') {
   canvas.ctx.beginPath();
   canvas.ctx.moveTo(x1, y1);
   canvas.ctx.lineTo(x2, y2);
   canvas.ctx.lineTo(x3, y3);
   canvas.ctx.closePath();
 
+  if (fill === 'fill') {
+    canvas.ctx.fillStyle = color;
+    canvas.ctx.fill();
+  } else {
+    canvas.ctx.strokeStyle = color;
+    canvas.ctx.stroke();
+  }
+}
+
+function arc(x, y, radius, angle1, angle2, color = 'cyan', fill = 'line') {
+  canvas.ctx.beginPath();
+  canvas.ctx.arc(x, y, radius, angle1 * (Math.PI / 180), angle2 * (Math.PI / 180));
+  
   if (fill === 'fill') {
     canvas.ctx.fillStyle = color;
     canvas.ctx.fill();

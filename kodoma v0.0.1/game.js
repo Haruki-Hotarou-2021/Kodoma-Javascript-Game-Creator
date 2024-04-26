@@ -39,6 +39,9 @@ function onGame(dt) {
   
   // Desenha um triângulo
   tri(x1 - 50, 0, x1, 100, x1 - 100, 100, 'green', 'fill');
+  
+  // Desenha um arco
+  arc(100, 250, 50, 90, 270, 'green');
 }
 
 

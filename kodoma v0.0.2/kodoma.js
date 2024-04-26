@@ -17,14 +17,15 @@ canvas = {
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
   // Função para desenhar o grid
-  grid() {
+  grid(distance = 10) {
+    let d = distance
     // Desenha o grid
     this.ctx.beginPath();
-    for (var x = -this.width; x <= this.width; x += 20) {
+    for (var x = -this.width; x <= this.width; x += d) {
       this.ctx.moveTo(x, -this.height);
       this.ctx.lineTo(x, this.height);
     }
-    for (var y = -this.height; y <= this.height; y += 20) {
+    for (var y = -this.height; y <= this.height; y += d) {
       this.ctx.moveTo(-this.width, y);
       this.ctx.lineTo(this.width, y);
     }
@@ -193,11 +194,10 @@ class Spr {
   }
 }
 
-
 class Rect {
-  constructor(x, y, width, height, color, fill = 'fill') {
-    this.x = x;
-    this.y = y;
+  constructor(x, y, width, height, color= 'red', fill = 'fill') {
+    this.x = x - width / 2;
+    this.y = y - height / 2;
     this.width = width;
     this.height = height;
     this.color = color;
@@ -216,7 +216,7 @@ class Rect {
 }
 
 class Circ {
-  constructor(radius, x, y, color, fill = 'fill') {
+  constructor(x, y, radius, color = 'blue', fill = 'fill') {
     this.radius = radius;
     this.x = x;
     this.y = y;
@@ -228,6 +228,78 @@ class Circ {
     canvas.ctx.beginPath();
     canvas.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     
+    if (this.fill === 'fill') {
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fill();
+    } else {
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.stroke();
+    }
+  }
+}
+
+class Line {
+  constructor(x0, y0, x1, y1, color = 'pink') {
+    this.x0 = x0;
+    this.y0 = y0;
+    this.x1 = x1;
+    this.y1 = y1;
+    this.color = color;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.moveTo(this.x0, this.y0);
+    canvas.ctx.lineTo(this.x1, this.y1);
+    canvas.ctx.strokeStyle = this.color;
+    canvas.ctx.stroke();
+  }
+}
+
+class Tri {
+  constructor(x1, y1, x2, y2, x3, y3, color = 'green', fill = 'fill') {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.x3 = x3;
+    this.y3 = y3;
+    this.color = color;
+    this.fill = fill;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.moveTo(this.x1, this.y1);
+    canvas.ctx.lineTo(this.x2, this.y2);
+    canvas.ctx.lineTo(this.x3, this.y3);
+    canvas.ctx.closePath();
+
+    if (this.fill === 'fill') {
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fill();
+    } else {
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.stroke();
+    }
+  }
+}
+
+// Desenha um arco
+class Arc {
+  constructor(x, y, radius, angle1 = 0, angle2 = 45, color = 'cyan', fill = 'line') {
+    this.x = x; 
+    this.y = y;
+    this.radius = radius;
+    this.angle1 = angle1 * (Math.PI / 180); // Convertendo o ângulo para radianos
+    this.angle2 = angle2 * (Math.PI / 180); // Convertendo o ângulo para radianos
+    this.color = color;
+    this.fill = fill;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.arc(this.x, this.y, this.radius, this.angle1, this.angle2);
     if (this.fill === 'fill') {
       canvas.ctx.fillStyle = this.color;
       canvas.ctx.fill();
