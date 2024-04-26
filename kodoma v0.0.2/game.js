@@ -12,9 +12,10 @@ function onLoad() {
   // Carregar um retangulo do tipo line
   rectb = new Rect(50, 255, 50, 50, "red", 'line');
   
-  //Carregar um círculo do tipo line
+  // Carregar um círculo do tipo line
   circ = new Circ(canvas.width - 50, 200, 20, 'blue', 'line');
-
+  
+  // Carrega um arco do tipo line
   arc = new Arc(canvas.width - 50, 250, 20, 90, 270, 'green');
 
 }
@@ -47,6 +48,7 @@ function onGame() {
   // Desenha o círculo do tipo line
   circ.display();
   
+  // Desenha o arco do tipo line
   arc.display()
   
 }
