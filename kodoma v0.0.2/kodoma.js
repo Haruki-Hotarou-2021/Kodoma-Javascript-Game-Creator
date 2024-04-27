@@ -205,7 +205,7 @@ class Spr {
 
 // Desenha um retângulo
 class Rect {
-  constructor(x, y, width, height, color= 'red', fill = 'fill') {
+  constructor(x = 0, y = 0, width = 50, height = 50, color = 'red', fill = 'fill') {
     this.x = x - width / 2;
     this.y = y - height / 2;
     this.width = width;
@@ -231,7 +231,7 @@ class Rect {
 
 // Desenha um círculo
 class Circ {
-  constructor(x, y, radius, color = 'blue', fill = 'fill') {
+  constructor(x = 0, y = 0, radius = 30, color = 'blue', fill = 'fill') {
     this.radius = radius;
     this.x = x;
     this.y = y;
@@ -255,7 +255,7 @@ class Circ {
 
 // Desenha uma linha
 class Line {
-  constructor(x0, y0, x1, y1, color = 'pink') {
+  constructor(x0 = 0, y0 = 250, x1 = 300, y1 = 250, color = 'pink') {
     this.x0 = x0;
     this.y0 = y0;
     this.x1 = x1;
@@ -304,7 +304,7 @@ class Tri {
 
 // Desenha um arco
 class Arc {
-  constructor(x, y, radius, angle1 = 0, angle2 = 45, color = 'cyan', fill = 'line') {
+  constructor(x = 0, y = 0, radius = 30, angle1 = 270, angle2 = 90, color = 'cyan', fill = 'line') {
     this.x = x; 
     this.y = y;
     this.radius = radius;
@@ -329,7 +329,7 @@ class Arc {
 
 // Desenha uma linha curva 
 class Curve {
-  constructor(x1, y1, x2, y2, controlX = 125, controlY = 100, color = 'purple') {
+  constructor(x1 = 0, y1 = 250, x2 = 300, y2 = 250, controlX = 125, controlY = 100, color = 'purple') {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
@@ -350,7 +350,7 @@ class Curve {
 
 // Desenha uma elipse 
 class Elli {
-  constructor(x, y, a, b, color = 'darkblue', fill = 'fill') {
+  constructor(x = 0, y = 0, a = 50, b = 10, color = 'darkblue', fill = 'fill') {
     this.x = x;
     this.y = y;
     this.a = a;
