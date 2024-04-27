@@ -6,6 +6,8 @@ function onLoad() {
   // Carregar o sprite do player
   player = new Spr('/../player.png', 50, 50, 200, 100, false);
   
+  player2 = new Spr('/../player.png', 50, 50, 100, 100);
+  
   // Carregar um retângulo
   rect = new Rect(100, 200, 50, 50, "green");
   
@@ -32,6 +34,7 @@ function onGame() {
   
   // Desenha o sprite do player
   player.display();
+  player2.display();
   
   // Espera 5 segundos e executa a função mudarTexto
   wait(5, mudarTexto);
@@ -58,8 +61,14 @@ function mudarTexto() {
 // Função para o player mover o círculo
 function move() {
 player.y += 1;
-console.clear()
-console.log(player.y);
+console.clear();
+console.log('Player: ' + player.y);
+}
+
+function move2() {
+  player2.y += 1;
+  console.clear();
+  console.log('Player2: ' + player2.y);
 }
 
 // Função de configuração do jogo
@@ -73,5 +82,5 @@ function onClick() {
   
   // Detecta toque no sprite do player e executar a função move()
   player.click(move);
-  
+  player2.click(move2)
 }
