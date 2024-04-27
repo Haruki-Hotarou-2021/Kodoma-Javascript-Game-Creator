@@ -92,7 +92,10 @@ function setFavicon(url) {
 // Função para carregar os recursos do jogo
 window.onload = function() {
   if (typeof onLoad === 'function') {
-  onLoad();
+    onLoad();
+  }
+  if (typeof onClick === 'function') {
+    onClick();
   }
 
   // Função para atualizar e desenhar os recursos do jogo
@@ -162,11 +165,14 @@ class Spr {
     this.x = X;
     this.y = Y;
     this.smooth = smooth;
+    // Marca o evento de toque como adicionado para evitar múltiplas adições
+    //this.toichStarted = false;
   }
 
   display() {
-    this._oX_ = this.x - this.width / 2;
-    this._oY_ = this.y - this.height / 2;
+    // Define as origens do sprite
+    this._oX_ = this.x - (this.width / 2);
+    this._oY_ = this.y - (this.height / 2);
     // Define a suavização do sprite
     canvas.ctx.imageSmoothingEnabled = this.smooth;
     // Desenha o sprite na tela
@@ -175,7 +181,7 @@ class Spr {
 
 
   // Método para adicionar evento de toque (tocar e soltar) ao sprite
-  touchStart(callback) {
+  click(callback) {
     if (typeof callback !== 'function') {
       console.error("O parâmetro 'callback' deve ser uma função");
       return;
@@ -187,17 +193,30 @@ class Spr {
       return;
     }
 
-    // Adiciona evento de click (tocar) no canvas
-    canvasElement.addEventListener('click', (event) => {
-      // Verifica se o clique está dentro da área do sprite
+    // Verifica se o evento de toque já foi adicionado
+    if (this.touchStarted) {
+      console.warn("Evento de toque já adicionado a este sprite.");
+      return;
+    }
+
+    // Adiciona evento de toque (touchstart) no canvas
+    canvasElement.addEventListener('touchstart', (event) => {
+      // Previne o comportamento padrão do toque para evitar o zoom da página
+      event.preventDefault();
+      //this.touchStarted = true;
+      
+      // Verifica se o toque está dentro da área do sprite
+      const touchX = event.touches[0].clientX - canvasElement.getBoundingClientRect().left;
+      const touchY = event.touches[0].clientY - canvasElement.getBoundingClientRect().top;
       if (
-        event.offsetX >= this.x &&
-        event.offsetX <= this.x + this.width &&
-        event.offsetY >= this.y &&
-        event.offsetY <= this.y + this.height
+        touchX >= this.x &&
+        touchX <= this.x + this.width &&
+        touchY >= this.y &&
+        touchY <= this.y + this.height
       ) {
-        // Chama a função callback se o clique estiver dentro do sprite
+        // Chama a função callback se o toque estiver dentro do sprite
         callback(event);
+        //this.touchStarted = false;
       }
     });
   }

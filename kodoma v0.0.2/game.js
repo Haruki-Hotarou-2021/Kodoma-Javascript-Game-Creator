@@ -28,16 +28,13 @@ function onGame() {
   canvas.grid();
   
   // Exibe um texto na tela
-  print(text, 20, 50, 14, 'red', 'Times New Roman');
+  print(text, player.x, player.y - 30, 14, 'red', 'Arial', 'normal', 'center');
   
   // Desenha o sprite do player
   player.display();
   
   // Espera 5 segundos e executa a função mudarTexto
   wait(5, mudarTexto);
-  
-  // Detecta toque no sprite do player e executar a função move()
-  player.touchStart(move);
   
   // Desenha o retângulo
   rect.display();
@@ -60,8 +57,9 @@ function mudarTexto() {
 
 // Função para o player mover o círculo
 function move() {
-console.log('Touching');
 player.y += 1;
+console.clear()
+console.log(player.y);
 }
 
 // Função de configuração do jogo
@@ -69,4 +67,11 @@ function config() {
   setTitle('MyGame');
   setFavicon('/../player.png');
   canvas.backgroundColor = 'white';
+}
+
+function onClick() {
+  
+  // Detecta toque no sprite do player e executar a função move()
+  player.click(move);
+  
 }
