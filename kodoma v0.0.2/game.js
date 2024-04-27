@@ -4,13 +4,13 @@ function onLoad() {
   text = 'Hello World!';
 
   // Carregar o sprite do player
-  player = new Spr('/../player.png', 50, 50, 200, 100);
+  player = new Spr('/../player.png', 50, 50, 200, 100, false);
   
   // Carregar um retângulo
-  rect = new Rect(50, 200, 50, 50, "green");
+  rect = new Rect(100, 200, 50, 50, "green");
   
   // Carregar um retangulo do tipo line
-  rectb = new Rect(50, 255, 50, 50, "red", 'line');
+  rectb = new Rect(100, 255, 50, 50, "red", 'line');
   
   // Carregar um círculo do tipo line
   circ = new Circ(canvas.width - 50, 200, 20, 'blue', 'line');
@@ -28,12 +28,12 @@ function onGame() {
   canvas.grid();
   
   // Exibe um texto na tela
-  printf(text, 20, 50, 14, 'red', 'Times New Roman',)
+  print(text, 20, 50, 14, 'red', 'Times New Roman');
   
   // Desenha o sprite do player
   player.display();
   
-  // Espera uma quantidade de segundos e executa a função mudarTexto
+  // Espera 5 segundos e executa a função mudarTexto
   wait(5, mudarTexto);
   
   // Detecta toque no sprite do player e executar a função move()
@@ -61,7 +61,7 @@ function mudarTexto() {
 // Função para o player mover o círculo
 function move() {
 console.log('Touching');
-circ.y += 1;
+player.y += 1;
 }
 
 // Função de configuração do jogo

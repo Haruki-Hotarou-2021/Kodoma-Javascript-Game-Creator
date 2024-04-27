@@ -6,19 +6,20 @@
  * @version 0.0.2
 */
 
+// CONFIGURAÇÕES -----------------------
+
 // Configura o canvas
 canvas = {
   id: 'canvas', // ID do elemento canvas
   width: window.innerWidth, // Largura do canvas (tamanho da tela)
   height: window.innerHeight, // Altura do canvas (tamanho da tela)
-  context: '2d', // Define o contexto para 2D
   ctx: null, // Contexto 2D do canvas (inicializado posteriormente)
   backgroundColor: '#000000', // Cor de fundo do canvas (branco padrão)
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
   // Função para desenhar o grid
   grid(distance = 10) {
-    let d = distance
+    let d = distance;
     // Desenha o grid
     this.ctx.beginPath();
     for (var x = -this.width; x <= this.width; x += d) {
@@ -31,6 +32,12 @@ canvas = {
     }
     this.ctx.strokeStyle = this.gridColor;
     this.ctx.stroke();
+  },
+  getWidth() {
+    return window.innerWidth;
+  },
+  getHeight() {
+    return window.innerHeight;
   }
 };
 
@@ -57,9 +64,11 @@ document.body.style.background = '#000000';
 document.body.appendChild(canvasElement);
 
 // Obtém o contexto do canvas
-canvas.ctx = canvasElement.getContext(canvas.context);
+canvas.ctx = canvasElement.getContext('2d');
+
+//--------------------------------------
   
-// FUNÇÕES
+// FUNÇÕES -----------------------------
   
 // Função que limpa o canvas
 function cls() {
@@ -118,50 +127,50 @@ function wait(seconds, callback) {
   }, seconds * 1000);
 }
 
-function print(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
+// Exibe um texto na tela
+function print(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal', align = 'left') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
     return;
   }
-  // Defina a fonte
+  // Define a fonte
   canvas.ctx.font = `${type} ${size}px ${font}`;
   canvas.ctx.fillStyle = color;
-  // Calcule a largura do texto usando a função measureText()
-  const textMetrics = canvas.ctx.measureText(text);
-  const textWidth = textMetrics.width;
-  // Ajuste a posição x para centralizar o texto
-  x -= textWidth / 2;
-  // Desenhe o texto na posição ajustada
+  // Centraliza o texto
+  canvas.ctx.textAlign = align;
+  canvas.ctx.textBaseline = 'middle';
+  // Desenha o texto
   canvas.ctx.fillText(text, x, y);
 }
 
-
-// Função que exibe um texto na tela
-function printf(text, x, y, size, color = "white", font = 'Arial', type = 'normal') {
-  if (!text) {
-    console.error("O parâmetro 'text' não pode ser vazio");
-  }
-  canvas.ctx.font = `${type} ${size}px ${font}`;
-  canvas.ctx.fillStyle = color;
-  canvas.ctx.fillText(text, x, y);
+// Retorna o número de milissegundos decorridos desde 1º de janeiro de 1970 00:00:00
+function tstamp() {
+  return Date.now(); // Retorna o timestamp atual em milissegundos
 }
 
+//--------------------------------------
 
-// CLASSES
+// CLASSES -----------------------------
 
-// Classe que cria um sprite
+// Cria um sprite
 class Spr {
-  constructor(sprite, width, height, X, Y) {
+  constructor(sprite, width = 50, height = 50, X = 0, Y = 0, smooth = true) {
     this.sprite = new Image();
     this.sprite.src = sprite;
     this.width = width;
     this.height = height;
-    this.x = X - this.width / 2;
-    this.y = Y - this.height / 2;
+    this.x = X;
+    this.y = Y;
+    this.smooth = smooth;
   }
 
   display() {
-    canvas.ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
+    this._oX_ = this.x - this.width / 2;
+    this._oY_ = this.y - this.height / 2;
+    // Define a suavização do sprite
+    canvas.ctx.imageSmoothingEnabled = this.smooth;
+    // Desenha o sprite na tela
+    canvas.ctx.drawImage(this.sprite, this._oX_, this._oY_, this.width, this.height);
   }
 
 
@@ -194,6 +203,7 @@ class Spr {
   }
 }
 
+// Desenha um retângulo
 class Rect {
   constructor(x, y, width, height, color= 'red', fill = 'fill') {
     this.x = x - width / 2;
@@ -205,16 +215,21 @@ class Rect {
   }
 
   display() {
+    // Defune as origens do retângulo
+    this._oX_ = this.x - (this.width / 2);
+    this._oY_ = this.y - (this.height / 2);
+    // Verifica se o retângulo deve ser preenchido
     if (this.fill === 'fill') {
       canvas.ctx.fillStyle = this.color;
-      canvas.ctx.fillRect(this.x, this.y, this.width, this.height);
+      canvas.ctx.fillRect(this._oX_, this._oY_, this.width, this.height);
     } else {
       canvas.ctx.strokeStyle = this.color;
-      canvas.ctx.strokeRect(this.x, this.y, this.width, this.height);
+      canvas.ctx.strokeRect(this._oX_, this._oY_, this.width, this.height);
     }
   }
 }
 
+// Desenha um círculo
 class Circ {
   constructor(x, y, radius, color = 'blue', fill = 'fill') {
     this.radius = radius;
@@ -238,6 +253,7 @@ class Circ {
   }
 }
 
+// Desenha uma linha
 class Line {
   constructor(x0, y0, x1, y1, color = 'pink') {
     this.x0 = x0;
@@ -256,6 +272,7 @@ class Line {
   }
 }
 
+// Desenha um triângulo
 class Tri {
   constructor(x1, y1, x2, y2, x3, y3, color = 'green', fill = 'fill') {
     this.x1 = x1;
@@ -300,6 +317,52 @@ class Arc {
   display() {
     canvas.ctx.beginPath();
     canvas.ctx.arc(this.x, this.y, this.radius, this.angle1, this.angle2);
+    if (this.fill === 'fill') {
+      canvas.ctx.fillStyle = this.color;
+      canvas.ctx.fill();
+    } else {
+      canvas.ctx.strokeStyle = this.color;
+      canvas.ctx.stroke();
+    }
+  }
+}
+
+// Desenha uma linha curva 
+class Curve {
+  constructor(x1, y1, x2, y2, controlX = 125, controlY = 100, color = 'purple') {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.controlX = controlX;
+    this.controlY = controlY;
+    this.color = color;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.moveTo(this.x1, this.y1); // Move para o primeiro ponto
+    canvas.ctx.quadraticCurveTo(this.controlX, this.controlY, this.x2, this.y2); // Desenha a curva quadrática
+    canvas.ctx.strokeStyle = this.color; // Define a cor da linha
+    canvas.ctx.stroke(); // Renderiza a curva
+  }
+}
+
+// Desenha uma elipse 
+class Elli {
+  constructor(x, y, a, b, color = 'darkblue', fill = 'fill') {
+    this.x = x;
+    this.y = y;
+    this.a = a;
+    this.b = b;
+    this.color = color;
+    this.fill = fill;
+  }
+
+  display() {
+    canvas.ctx.beginPath();
+    canvas.ctx.ellipse(this.x, this.y, this.a, this.b, 0, 0, 2 * Math.PI);
+
     if (this.fill === 'fill') {
       canvas.ctx.fillStyle = this.color;
       canvas.ctx.fill();

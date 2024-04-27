@@ -11,20 +11,20 @@ canvas = {
   id: 'canvas', // ID do elemento canvas
   width: window.innerWidth, // Largura do canvas (tamanho da tela)
   height: window.innerHeight, // Altura do canvas (tamanho da tela)
-  context: '2d', // Define o contexto para 2D
   ctx: null, // Contexto 2D do canvas (inicializado posteriormente)
   backgroundColor: '#000000', // Cor de fundo do canvas (Preto padrão)
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
   // Função para desenhar o grid
-  grid() {
+  grid(distance = 10) {
+    let d = distance;
     // Desenha o grid
     this.ctx.beginPath();
-    for (var x = -this.width; x <= this.width; x += 20) {
+    for (var x = -this.width; x <= this.width; x += d) {
       this.ctx.moveTo(x, -this.height);
       this.ctx.lineTo(x, this.height);
     }
-    for (var y = -this.height; y <= this.height; y += 20) {
+    for (var y = -this.height; y <= this.height; y += d) {
       this.ctx.moveTo(-this.width, y);
       this.ctx.lineTo(this.width, y);
     }
@@ -32,10 +32,10 @@ canvas = {
     this.ctx.stroke();
   },
   getWidth() {
-    return this.width;
+    return window.innerWidth;
   },
   getHeight() {
-    return this.height;
+    return window.innerHeight;
   }
 };
 
@@ -61,7 +61,7 @@ document.body.style.background = '#000000';
 document.body.appendChild(canvasElement);
 
 // Obtém o contexto do canvas
-canvas.ctx = canvasElement.getContext(canvas.context);
+canvas.ctx = canvasElement.getContext('2d');
   
 // FUNÇÕES
   
@@ -117,8 +117,8 @@ function wait(seconds, callback) {
   }, seconds * 1000);
 }
 
-
-function print(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal') {
+// Exibe um texto na tela
+function print(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal', align = 'left') {
   if (!text) {
     console.error("O parâmetro 'text' não pode ser vazio");
     return;
@@ -126,26 +126,16 @@ function print(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', t
   // Defina a fonte
   canvas.ctx.font = `${type} ${size}px ${font}`;
   canvas.ctx.fillStyle = color;
-  // Calcule a largura do texto usando a função measureText()
-  const textMetrics = canvas.ctx.measureText(text);
-  const textWidth = textMetrics.width;
-  // Ajuste a posição x para centralizar o texto
-  x -= textWidth / 2;
-  // Desenhe o texto na posição ajustada
+  // Centraliza o texto
+  canvas.ctx.textAlign = align;
+  canvas.ctx.textBaseline = 'middle';
+  // Desenha o texto
   canvas.ctx.fillText(text, x, y);
-  // Retorne a largura do texto
-  return textWidth;
 }
 
-
-// Função que exibe um texto na tela
-function printf(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', type = 'normal') {
-  if (!text) {
-    console.error("O parâmetro 'text' não pode ser vazio");
-  }
-  canvas.ctx.font = `${type} ${size}px ${font}`;
-  canvas.ctx.fillStyle = color;
-  canvas.ctx.fillText(text, x, y);
+// Retorna o número de milissegundos decorridos desde 1º de janeiro de 1970 00:00:00
+function tstamp() {
+  return Date.now(); // Retorna o timestamp atual em milissegundos
 }
 
 
@@ -196,25 +186,32 @@ function printf(text, x = 0, y = 0, size = 14, color = "white", font = 'Arial', 
 */
 
 // Desenha um sprite
-function spr(sprite, width = 50, height = 50, x = 0, y = 0) {
+function spr(sprite, width = 50, height = 50, x = 0, y = 0, smooth = true) {
   let spr = new Image();
   spr.src = sprite;
-  let X = x - width / 2;
-  let Y = y - height / 2;
-  canvas.ctx.drawImage(spr, X, Y, width, height);
+  let X = x;
+  let Y = y;
+  let _oX_ = X - width / 2;
+  let _oY_ = Y - height / 2;
+  // Define a suavização do sprite
+  canvas.ctx.imageSmoothingEnabled = smooth;
+  // Desenha o sprite na tela
+  canvas.ctx.drawImage(spr, _oX_, _oY_, width, height);
 }
 
 // Desenha um retângulo
 function rect(x, y, width, height, color = 'red', fill = 'fill') {
-  let X = x - width / 2;
-  let Y = y - height / 2;
+  let X = x;
+  let Y = y;
+  let _oX_ = X - width / 2;
+  let _oY_ = Y - height / 2;
   
   if (fill === 'fill') {
       canvas.ctx.fillStyle = color;
-      canvas.ctx.fillRect(X, Y, width, height);
+      canvas.ctx.fillRect(_oX_, _oY_, width, height);
     } else {
       canvas.ctx.strokeStyle = color;
-      canvas.ctx.strokeRect(X, Y, width, height);
+      canvas.ctx.strokeRect(_oX_, _oY_, width, height);
     }
 }
 
@@ -261,6 +258,27 @@ function tri(x1, y1, x2, y2, x3, y3, color = 'green',fill = 'fill') {
 function arc(x, y, radius, angle1, angle2, color = 'cyan', fill = 'line') {
   canvas.ctx.beginPath();
   canvas.ctx.arc(x, y, radius, angle1 * (Math.PI / 180), angle2 * (Math.PI / 180));
+  
+  if (fill === 'fill') {
+    canvas.ctx.fillStyle = color;
+    canvas.ctx.fill();
+  } else {
+    canvas.ctx.strokeStyle = color;
+    canvas.ctx.stroke();
+  }
+}
+
+function curve(x1, y1, x2, y2, controlX = 125, controlY = 100, color = 'purple') {
+  canvas.ctx.beginPath();
+  canvas.ctx.moveTo(x1, y1); // Move para o primeiro ponto
+  canvas.ctx.quadraticCurveTo(controlX, controlY, x2, y2); // Desenha a curva quadrática
+  canvas.ctx.strokeStyle = color; // Define a cor da linha
+  canvas.ctx.stroke(); // Renderiza a curva
+}
+
+function elli(x, y, a, b, color = 'darkblue', fill = 'fill') {
+  canvas.ctx.beginPath();
+  canvas.ctx.ellipse(x, y, a, b, 0, 0, 2 * Math.PI);
   
   if (fill === 'fill') {
     canvas.ctx.fillStyle = color;
