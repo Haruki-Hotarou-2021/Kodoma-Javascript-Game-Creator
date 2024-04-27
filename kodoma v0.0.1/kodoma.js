@@ -15,7 +15,7 @@ canvas = {
   backgroundColor: '#000000', // Cor de fundo do canvas (Preto padrão)
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
-  // Função para desenhar o grid
+  // Desenha um grid
   grid(distance = 10) {
     let d = distance;
     // Desenha o grid
@@ -65,7 +65,7 @@ canvas.ctx = canvasElement.getContext('2d');
   
 // FUNÇÕES
   
-// Função que limpa o canvas
+// Limpa o canvas
 function cls() {
   canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -139,7 +139,7 @@ function tstamp() {
 }
 
 
-// Objetos
+// OBJETOS
 
 /*
 // Função que cria um sprite
@@ -200,7 +200,7 @@ function spr(sprite, width = 50, height = 50, x = 0, y = 0, smooth = true) {
 }
 
 // Desenha um retângulo
-function rect(x, y, width, height, color = 'red', fill = 'fill') {
+function rect(x = 0, y = 0, width = 50, height = 50, color = 'red', fill = 'fill') {
   let X = x;
   let Y = y;
   let _oX_ = X - width / 2;
@@ -216,7 +216,7 @@ function rect(x, y, width, height, color = 'red', fill = 'fill') {
 }
 
 // Desenha um círculo 
-function circ(x, y, radius, color = 'blue', fill = 'fill') {
+function circ(x = 0, y = 0, radius = 30, color = 'blue', fill = 'fill') {
   canvas.ctx.beginPath();
   canvas.ctx.arc(x, y, radius, 0, 2 * Math.PI);
 
@@ -230,7 +230,7 @@ function circ(x, y, radius, color = 'blue', fill = 'fill') {
 }
 
 // Desenha uma linha
-function line(x0, y0, x1, y1, color = 'pink') {
+function line(x0 = 0, y0 = 250, x1 = 300, y1 = 250, color = 'pink') {
   canvas.ctx.beginPath();
   canvas.ctx.moveTo(x0, y0);
   canvas.ctx.lineTo(x1, y1);
@@ -255,7 +255,8 @@ function tri(x1, y1, x2, y2, x3, y3, color = 'green',fill = 'fill') {
   }
 }
 
-function arc(x, y, radius, angle1, angle2, color = 'cyan', fill = 'line') {
+// Desenha um arco
+function arc(x = 0, y = 0, radius = 30, angle1 = 270, angle2 = 90, color = 'cyan', fill = 'line') {
   canvas.ctx.beginPath();
   canvas.ctx.arc(x, y, radius, angle1 * (Math.PI / 180), angle2 * (Math.PI / 180));
   
@@ -268,7 +269,8 @@ function arc(x, y, radius, angle1, angle2, color = 'cyan', fill = 'line') {
   }
 }
 
-function curve(x1, y1, x2, y2, controlX = 125, controlY = 100, color = 'purple') {
+// Desenha uma linh curva
+function curve(x1 = 0, y1 = 250, x2 = 300, y2 = 250, controlX = 125, controlY = 100, color = 'purple') {
   canvas.ctx.beginPath();
   canvas.ctx.moveTo(x1, y1); // Move para o primeiro ponto
   canvas.ctx.quadraticCurveTo(controlX, controlY, x2, y2); // Desenha a curva quadrática
@@ -276,7 +278,8 @@ function curve(x1, y1, x2, y2, controlX = 125, controlY = 100, color = 'purple')
   canvas.ctx.stroke(); // Renderiza a curva
 }
 
-function elli(x, y, a, b, color = 'darkblue', fill = 'fill') {
+// Desenha uma elipse
+function elli(x = 0, y = 0, a = 50, b = 10, color = 'darkblue', fill = 'fill') {
   canvas.ctx.beginPath();
   canvas.ctx.ellipse(x, y, a, b, 0, 0, 2 * Math.PI);
   
