@@ -41,6 +41,7 @@ canvas = {
   }
 };
 
+
 // Define a funcao de configuração do canvas
 if (typeof config === 'function') {
   config();
@@ -89,8 +90,28 @@ function setFavicon(url) {
   document.head.appendChild(link);
 }
 
+// Recarrega a página
+function reload() {
+  window.location.reload();
+}
+
+// Redimensiona o canvas
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+function resize() {
+  resizeCanvas();
+  reload();
+}
+// Chama a função resizeCanvas quando a tela é redimensionada
+window.addEventListener('resize', resize);
+// Chama a função resizeCanvas quando a orientação da tela é alterada (de retrato para paisagem e vice-versa)
+window.addEventListener('orientationchange', resize);
+
 // Função para carregar os recursos do jogo
 window.onload = function() {
+resizeCanvas();
   if (typeof onLoad === 'function') {
     onLoad();
   }
@@ -114,6 +135,7 @@ window.onload = function() {
   }
   update();
 }
+
 
 // Aguardar segundos e executar callback
 function wait(seconds, callback) {
