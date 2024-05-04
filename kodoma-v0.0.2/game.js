@@ -30,7 +30,7 @@ function onGame() {
   canvas.grid();
   
   // Exibe um texto na tela
-  print(text, player.x, player.y - 30, 14, 'red', 'Arial', 'normal', 'center');
+  print(text, player.x, player.y - 30, 14, 'red', 'Arial', 'bold', 'center');
   
   // Desenha o sprite do player
   player.display();

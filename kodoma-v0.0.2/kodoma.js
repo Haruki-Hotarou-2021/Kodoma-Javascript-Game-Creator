@@ -14,7 +14,7 @@ canvas = {
   width: window.innerWidth, // Largura do canvas (tamanho da tela)
   height: window.innerHeight, // Altura do canvas (tamanho da tela)
   ctx: null, // Contexto 2D do canvas (inicializado posteriormente)
-  backgroundColor: '#000000', // Cor de fundo do canvas (branco padrão)
+  backgroundColor: '#000000', // Cor de fundo do canvas (preto padrão)
   gridColor: '#CCCCCC', // Define a cor do grid para cinza claro
 
   // Função para desenhar o grid
@@ -59,7 +59,7 @@ canvasElement.style.backgroundColor = canvas.backgroundColor;
 // Define a margin e o padding do body para 0
 document.body.style.margin = 0;
 document.body.style.padding = 0;
-document.body.style.background = '#000000';
+document.body.style.background = canvas.backgroundColor;
 
 // Adiciona o canvas ao body
 document.body.appendChild(canvasElement);
